@@ -1,0 +1,58 @@
+.box {
+  color: #fe33ac;
+  border-color: #fdcdea;
+}
+span{
+    display: block;
+}
+.delete{
+    color: red
+}
+.indent-2 {
+    margin-left:10px;
+}
+.indent-4 {
+    margin-left:20px;
+}
+.indent-6 {
+    margin-left:30px;
+}
+.indent-8 {
+    margin-left:40px;
+}
+.indent-10 {
+    margin-left:50px;
+}
+.indent-12 {
+    margin-left:60px;
+}
+.indent-14 {
+    margin-left:70px;
+}
+.indent-16 {
+    margin-left:80px;
+}
+.indent-18 {
+    margin-left:90px;
+}
+.indent-20 {
+    margin-left:100px;
+}
+.indent-22 {
+    margin-left:110px;
+}
+.indent-24 {
+    margin-left:120px;
+}
+.indent-26 {
+    margin-left:130px;
+}
+.indent-28 {
+    margin-left:140px;
+}
+.indent-30 {
+    margin-left:150px;
+}
+.add{
+    color: green
+}

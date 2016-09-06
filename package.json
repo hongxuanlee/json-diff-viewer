@@ -1,0 +1,14 @@
+{
+  "name": "json-diff-viewer",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "kino",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^1.13.2"
+  }
+}
