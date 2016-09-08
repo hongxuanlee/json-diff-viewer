@@ -1,5 +1,4 @@
-require("../src/style/main.css");
-// const diff = require('./diff');
+'use strict';
 
 const jsonViewer = require('../index');
 
@@ -25,6 +24,9 @@ var rhs = {
     }
 };
 
-jsonViewer(lhs, rhs);
+jsonViewer({
+    left: lhs,
+    right: rhs
+});
 
 

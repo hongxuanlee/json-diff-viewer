@@ -1,9 +1,17 @@
 'use strict';
 const _ = require('./util');
 
-const SPACE = 2;
+let SPACE = 10;
 
-let getIndentStyle = space => 'indent-' + space;
+let getIndentStyle = space => `margin-left: ${space}px`;
+
+let getColorStyle = color => {
+    if(color === 'delete'){
+        return 'color: red';
+    }else if(color === 'add'){
+        return 'color: green';
+    }
+};
 
 let getDeepByPath = path => path.split('.').length + 1;
 
@@ -34,21 +42,26 @@ let replaceIndent = str => {
 
 let htmlLine = (line, deep, color) => {
     let curSpace = deep * SPACE + getStringifyIndent(line);
-    let style = getIndentStyle(curSpace);
-    style = color ? `${style} ${color}` : style;
+    let indentStyle = getIndentStyle(curSpace);
+    let style = indentStyle;
+    let colorStyle = '';
+    if(color){
+        colorStyle = `style = "${getColorStyle(color)}"`;
+        // style += ';' + colorStyle;
+    }
     line = replaceIndent(line);
-    let label = '';
+    let label = '&nbsp;&nbsp';
     if (color === 'add') {
         label = '+';
     } else if (color === 'delete') {
         label = '-';
     }
-    return `<span class="${style}">${label} ${line}</span>`;
+    return `<div ${colorStyle}><span>${label}</span><span style="${style}">${line}</span></div>`;
 };
 
 let formatObj = (k = null, obj, path, isLast = false, color = null) => {
     let deep = getDeepByPath(path);
-    let stJson = JSON.stringify(obj, null, SPACE).split('\n');
+    let stJson = JSON.stringify(obj, null, 2).split('\n');
     if (k) {
         let label = stJson[0];
         stJson[0] = `"${k}" : ${label}`;
@@ -66,7 +79,7 @@ let formatStr = (k, val, path, isLast = false, color = null) => {
     if (!isLast) {
         v = v + ',';
     }
-    let seq = k ? `${k}: ${v}` : `${v}`;
+    let seq = k ? `"${k}": ${v}` : `${v}`;
     return htmlLine(seq, deep, color);
 };
 
@@ -97,7 +110,7 @@ let formatDiff = (diffItem, k, val, path, isLast) => {
 let findDiff = (diff, k, val, path, isLast) => {
     if (diff[path]) {
         return formatDiff(diff[path], k, val, path, isLast);
-    } else {
+    }else{
         let deep = getDeepByPath(path);
         let style = getIndentStyle(deep * SPACE);
         let tokens = display(val, diff, path);
@@ -128,18 +141,21 @@ let display = (json, diff, root = null) => {
     return tokens;
 };
 
-let wrapJson = (json, token, className = '', k = null) => {
-    let key = k ? `${k}: ` : '';
+let wrapJson = (json, token, style = '', k = null) => {
+    let key = k ? `"${k}": ` : '';
     if (_.isArray(json)) {
-        token.push(`<span class="${className}">]</span>`);
-        token.unshift(`<span class="${className}">${key}[</span>`);
+        token.push(`<div><span>&nbsp;&nbsp;</span><span style="${style}">]</span></div>`);
+        token.unshift(`<div><span>&nbsp;&nbsp;</span><span style="${style}">${key}[</span></div>`);
     } else if (_.isObject(json)) {
-        token.push(`<span class="${className}">}</span>`);
-        token.unshift(`<span class="${className}">${key}{</span>`);
+        token.push(`<div><span>&nbsp;&nbsp;</span><span style="${style}">}</span></div>`);
+        token.unshift(`<div><span>&nbsp;&nbsp;</span><span style="${style}">${key}{</span></div>`);
     }
 };
 
-let run = (json, diff) => {
+let run = (json, diff, options = {}) => {
+    if(options.space){
+        SPACE = options.space;
+    }
     let tokens = display(json, diff);
     wrapJson(json, tokens);
     return tokens.join('');
