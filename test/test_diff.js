@@ -2,6 +2,13 @@ const expect = require('chai').expect;
 const diff = require('../src/diff');
 
 describe('diff json', () => {
+    it('should merge same object', () => {
+        let x = {a: 1};
+        let y = {a: 1};
+        let {merge, diffMap} = diff(x, y);
+        expect(merge).to.deep.equal({a: 1});
+        expect(diffMap).to.deep.equal({});
+    });
     it('should merge 2 number', () => {
         let {merge, diffMap} = diff(10, 11);
         expect(merge).to.equal(10);

@@ -43,6 +43,14 @@ let y = [{
 
 let {left, right} = require('../test/feature/diff_obj1');
 
+// let old = require('../test/feature/waimai');
+
+// let update = Object.assign({}, old);
+
+// update.error_msg = 'no error!';
+// update.discount_info = {};
+// update.categoryIds = [1, 2];
+
 jsonViewer({
     left: left,
     right: right

@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const diff = require('../src/diff');
 const display = require('../src/display');
 
 describe('diff display', () => {
@@ -19,14 +20,14 @@ describe('diff display', () => {
             indent: 4
         });
         let res = ['<div><span>&nbsp;&nbsp;</span><span style="">{</span></div>',
-                      '<div ><span>&nbsp;&nbsp</span><span style="margin-left: 20px">"a": 1,</span></div>',
-                      '<div style = "color: green"><span>+</span><span style="margin-left: 20px">"b" : {</span></div>',
-                      '<div style = "color: green"><span>+</span><span style="margin-left: 40px">"c": 1</span></div>',
-                      '<div style = "color: green"><span>+</span><span style="margin-left: 20px">}</span></div>',
-                      '<div><span>&nbsp;&nbsp;</span><span style="">}</span></div>' ];
+                  '<div ><span>&nbsp;&nbsp</span><span style="margin-left: 20px">"a": 1,</span></div>',
+                  '<div style = "color: green"><span>+</span><span style="margin-left: 20px">"b" : {</span></div>',
+                  '<div style = "color: green"><span>+</span><span style="margin-left: 40px">"c": 1</span></div>',
+                  '<div style = "color: green"><span>+</span><span style="margin-left: 20px">}</span></div>',
+                  '<div><span>&nbsp;&nbsp;</span><span style="">}</span></div>' ];
         expect(tokens).to.deep.equal(res);
     });
-    it('should get display tokens1', () => {
+    it('should get display tokens0', () => {
         let merge = [{
             'a': 1,
             'b': 2,
@@ -71,7 +72,7 @@ describe('diff display', () => {
         ];
         expect(tokens).to.deep.equal(results);
     });
-    it('should get display tokens2', () => {
+    it('should get display tokens1', () => {
         let {
             merge,
             diffMap
@@ -119,5 +120,30 @@ describe('diff display', () => {
             '<div><span>&nbsp;&nbsp;</span><span style="">}</span></div>'
         ];
         expect(tokens).to.deep.equal(results);
+    });
+    it('should diff and display json', () => {
+        let {left, right} = require('./feature/diff_obj2');
+        let {merge, diffMap} = diff(left, right);
+        let tokens = display(merge, diffMap);
+        let res = [ '<div><span>&nbsp;&nbsp;</span><span style="">{</span></div>',
+                  '<div style = "color: red"><span>-</span><span style="margin-left: 20px">"name": "my object",</span></div>',
+                  '<div style = "color: green"><span>+</span><span style="margin-left: 20px">"name": "updated object",</span></div>',
+                  '<div ><span>&nbsp;&nbsp</span><span style="margin-left: 20px">"description": "it\'s an object!",</span></div>',
+                  '<div><span>&nbsp;&nbsp;</span><span style="margin-left: 20px">"details": {</span></div>',
+                  '<div ><span>&nbsp;&nbsp</span><span style="margin-left: 40px">"it": "has",</span></div>',
+                  '<div ><span>&nbsp;&nbsp</span><span style="margin-left: 40px">"an": "array",</span></div>',
+                  '<div><span>&nbsp;&nbsp;</span><span style="margin-left: 40px">"with": [</span></div>',
+                  '<div ><span>&nbsp;&nbsp</span><span style="margin-left: 60px">"a",</span></div>',
+                  '<div ><span>&nbsp;&nbsp</span><span style="margin-left: 60px">"few",</span></div>',
+                  '<div style = "color: red"><span>-</span><span style="margin-left: 60px">"elements",</span></div>',
+                  '<div style = "color: green"><span>+</span><span style="margin-left: 60px">"more",</span></div>',
+                  '<div style = "color: green"><span>+</span><span style="margin-left: 60px">"elements",</span></div>',
+                  '<div style = "color: green"><span>+</span><span style="margin-left: 60px">{</span></div>',
+                  '<div style = "color: green"><span>+</span><span style="margin-left: 80px">"than": "before"</span></div>',
+                  '<div style = "color: green"><span>+</span><span style="margin-left: 60px">}</span></div>',
+                  '<div><span>&nbsp;&nbsp;</span><span style="margin-left: 40px">]</span></div>',
+                  '<div><span>&nbsp;&nbsp;</span><span style="margin-left: 20px">}</span></div>',
+                  '<div><span>&nbsp;&nbsp;</span><span style="">}</span></div>' ];
+        expect(tokens).to.deep.equal(res);         
     });
 });
