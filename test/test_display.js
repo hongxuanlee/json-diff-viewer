@@ -2,6 +2,30 @@ const expect = require('chai').expect;
 const display = require('../src/display');
 
 describe('diff display', () => {
+    it('should get display option', () => {
+        let merge = {
+            a: 1,
+            b: {
+              c: 1
+            }
+        };
+        let diffMap = {
+            'b': {
+                type: 'add'
+            }
+        };
+        let tokens = display(merge, diffMap, {
+            space: 5,
+            indent: 4
+        });
+        let res = ['<div><span>&nbsp;&nbsp;</span><span style="">{</span></div>',
+                      '<div ><span>&nbsp;&nbsp</span><span style="margin-left: 20px">"a": 1,</span></div>',
+                      '<div style = "color: green"><span>+</span><span style="margin-left: 20px">"b" : {</span></div>',
+                      '<div style = "color: green"><span>+</span><span style="margin-left: 40px">"c": 1</span></div>',
+                      '<div style = "color: green"><span>+</span><span style="margin-left: 20px">}</span></div>',
+                      '<div><span>&nbsp;&nbsp;</span><span style="">}</span></div>' ];
+        expect(tokens).to.deep.equal(res);
+    });
     it('should get display tokens1', () => {
         let merge = [{
             'a': 1,
