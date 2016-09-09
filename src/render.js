@@ -4,9 +4,9 @@ const diff = require('./diff');
 
 const display = require('./display');
 
-let appendContent = ({ left = {}, right = {} }, selector) => {
+let appendContent = ({ left = {}, right = {} }, selector, options) => {
     let {merge, diffMap} = diff(left, right);
-    let content = display(merge, diffMap).join('');
+    let content = display(merge, diffMap, options).join('');
     if(selector){
         selector.innerHTML = content;
     }else{
