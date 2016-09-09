@@ -19,7 +19,7 @@ describe('diff json', () => {
         let y = {x: 1};
         let {merge, diffMap} = diff(x, y);
         expect(merge).to.deep.equal('hello');
-        expect(diffMap).to.deep.equal({type: 'edit', modify: {x : 1} });
+        expect(diffMap).to.deep.equal({type: 'edit', modify: {x: 1} });
     });
     it('should merge object and array', () => {
         let x = [1, 2, 3];
@@ -35,7 +35,7 @@ describe('diff json', () => {
           'x': { type: 'add' } 
         });
     });
-    it('should merge json and get diff path map', () => {
+    it('should merge array and get diff path map', () => {
         let x = [{
             a: 1,
             b: 2,
@@ -71,6 +71,13 @@ describe('diff json', () => {
                 'x': 1
             }
         }]);
+    });
+    it('should merge object', () => {
+        let {left, right} = require('./feature/diff_obj1');
+        let {merge, diffMap} = diff(left, right); 
+        let res = require('./feature/merge_obj1');
+        expect(merge).to.deep.equal(res.merge);
+        expect(diffMap).to.deep.equal(res.diffMap);
     });
 });
 

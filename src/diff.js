@@ -3,7 +3,7 @@
  * {
  *   path: {
  *     type: add/delete/edit,
- *     modify: ''
+ *     modify: right value
  *   }
  * }
  * @type {Object}

@@ -1,7 +1,7 @@
 'use strict';
 const _ = require('./util');
-
 let SPACE = 10;
+let INDENT = 2;
 
 let getIndentStyle = space => `margin-left: ${space}px`;
 
@@ -10,10 +10,12 @@ let getColorStyle = color => {
         return 'color: red';
     }else if(color === 'add'){
         return 'color: green';
+    }else{
+        return '';
     }
 };
 
-let getDeepByPath = path => path.split('.').length + 1;
+let getDeepByPath = path => path.split('.').length;
 
 let matchPrefix = (paths, path) => {
     let matchPath = [];
@@ -41,13 +43,12 @@ let replaceIndent = str => {
 };
 
 let htmlLine = (line, deep, color) => {
-    let curSpace = deep * SPACE + getStringifyIndent(line);
+    let curSpace = deep * INDENT * SPACE + getStringifyIndent(line) * SPACE;
     let indentStyle = getIndentStyle(curSpace);
     let style = indentStyle;
     let colorStyle = '';
     if(color){
         colorStyle = `style = "${getColorStyle(color)}"`;
-        // style += ';' + colorStyle;
     }
     line = replaceIndent(line);
     let label = '&nbsp;&nbsp';
@@ -61,7 +62,7 @@ let htmlLine = (line, deep, color) => {
 
 let formatObj = (k = null, obj, path, isLast = false, color = null) => {
     let deep = getDeepByPath(path);
-    let stJson = JSON.stringify(obj, null, 2).split('\n');
+    let stJson = JSON.stringify(obj, null, INDENT).split('\n');
     if (k) {
         let label = stJson[0];
         stJson[0] = `"${k}" : ${label}`;
@@ -112,7 +113,7 @@ let findDiff = (diff, k, val, path, isLast) => {
         return formatDiff(diff[path], k, val, path, isLast);
     }else{
         let deep = getDeepByPath(path);
-        let style = getIndentStyle(deep * SPACE);
+        let style = getIndentStyle(deep * INDENT * SPACE);
         let tokens = display(val, diff, path);
         if (!isNaN(k)) {
             k = null;
@@ -156,9 +157,12 @@ let run = (json, diff, options = {}) => {
     if(options.space){
         SPACE = options.space;
     }
+    if(options.indent){
+        INDENT = options.indent;
+    }
     let tokens = display(json, diff);
     wrapJson(json, tokens);
-    return tokens.join('');
+    return tokens;
 };
 
 module.exports = run;

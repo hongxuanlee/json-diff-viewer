@@ -2,7 +2,7 @@
 
 const jsonViewer = require('../index');
 
-var lhs = {
+let lhs = {
     name: 'my object',
     description: 'it\'s an object!',
     details: {
@@ -12,7 +12,7 @@ var lhs = {
     }
 };
 
-var rhs = {
+let rhs = {
     name: 'updated object',
     description: 'it\'s an object!',
     details: {
@@ -24,9 +24,28 @@ var rhs = {
     }
 };
 
+let x = [{
+    a: 1,
+    b: 2,
+    f: {
+        x: 1
+    }
+}];
+let y = [{
+    a: 1,
+    b: 2,
+    c: 3,
+    d: 4,
+    e: {
+        x: 1
+    }
+}];
+
+let {left, right} = require('../test/feature/diff_obj1');
+
 jsonViewer({
-    left: lhs,
-    right: rhs
+    left: left,
+    right: right
 });
 
 
