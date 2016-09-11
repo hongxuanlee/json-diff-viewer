@@ -118,7 +118,7 @@ let findDiff = (diff, k, val, path, isLast) => {
         if (!isNaN(k)) {
             k = null;
         }
-        wrapJson(val, tokens, style, k);
+        wrapJson(val, tokens, style, k, isLast);
         return tokens;
     }
 };
@@ -142,13 +142,14 @@ let display = (json, diff, root = null) => {
     return tokens;
 };
 
-let wrapJson = (json, token, style = '', k = null) => {
+let wrapJson = (json, token, style = '', k = null, isLast = true) => {
     let key = k ? `"${k}": ` : '';
+    let comma = isLast ? '' : ',';
     if (_.isArray(json)) {
-        token.push(`<div><span>&nbsp;&nbsp;</span><span style="${style}">]</span></div>`);
+        token.push(`<div><span>&nbsp;&nbsp;</span><span style="${style}">]${comma}</span></div>`);
         token.unshift(`<div><span>&nbsp;&nbsp;</span><span style="${style}">${key}[</span></div>`);
     } else if (_.isObject(json)) {
-        token.push(`<div><span>&nbsp;&nbsp;</span><span style="${style}">}</span></div>`);
+        token.push(`<div><span>&nbsp;&nbsp;</span><span style="${style}">}${comma}</span></div>`);
         token.unshift(`<div><span>&nbsp;&nbsp;</span><span style="${style}">${key}{</span></div>`);
     }
 };

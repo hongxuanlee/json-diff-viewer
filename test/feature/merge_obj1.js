@@ -1,7 +1,4 @@
 let diffMap = {
-    errorNo: {
-        type: 'delete'
-    },
     errorMsg: {
         type: 'edit',
         modify: 'error'

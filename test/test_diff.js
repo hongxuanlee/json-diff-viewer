@@ -79,7 +79,32 @@ describe('diff json', () => {
             }
         }]);
     });
-    it('should merge object', () => {
+    it('should merge obj 0', () => {
+        let a = {
+            data: [0, 1, 2, 3],
+            message: 'success',
+            status: 0
+        };
+        let b = {
+            data: [0, 1, 2, 3],
+            message: 'success',
+            status: 0,
+            a: 10
+        };
+        let {merge, diffMap} = diff(a, b); 
+        expect(merge).to.deep.equal({
+            data: [ 0, 1, 2, 3 ],
+            message: 'success',
+            status: 0,
+            a: 10
+        });
+        expect(diffMap).to.deep.equal({
+            a: {
+                type: 'add'
+            }
+        });
+    });
+    it('should merge object 1', () => {
         let {left, right} = require('./feature/diff_obj1');
         let {merge, diffMap} = diff(left, right); 
         let res = require('./feature/merge_obj1');

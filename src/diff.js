@@ -12,6 +12,8 @@ const _ = require('./util');
 
 let deepEqual = (obj1, obj2) => JSON.stringify(obj1) === JSON.stringify(obj2);
 
+let isExist = item => item !== undefined;
+
 let mergeJson = (left, right, root = null, diffMap = {}) => {
     let merge = {};
     if (deepEqual(left, right)) {
@@ -23,7 +25,7 @@ let mergeJson = (left, right, root = null, diffMap = {}) => {
         let rItem = right[k];
         let lItem = left[k];
         let path = root ? `${root}.${k}` : k;
-        if (rItem) {
+        if (isExist(rItem)) {
             if (_.isObjorArr(rItem) && _.isObjorArr(lItem)) {
                 left[k] = mergeJson(lItem, rItem, path, diffMap);
             } else {

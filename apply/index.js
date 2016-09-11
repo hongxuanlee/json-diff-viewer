@@ -41,6 +41,19 @@ let y = [{
     }
 }];
 
+let a = {
+    data: [0, 1, 2, 3],
+    message: 'success',
+    status: 0
+};
+
+let b = {
+    data: [0, 1, 2, 3],
+    message: 'success',
+    status: 0,
+    a: 10
+};
+
 let {left, right} = require('../test/feature/diff_obj1');
 let res = jsonViewer({
     left: left,
